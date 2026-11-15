@@ -3,6 +3,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { toast } from 'react-toastify'
 import { createClient } from '@/lib/supabase/client'
 
 export default function CreatePost() {
@@ -27,7 +28,7 @@ export default function CreatePost() {
     e.preventDefault()
 
     if (!image) {
-      alert('Please select an image')
+      toast.error('Please select an image')
       return
     }
 
@@ -62,38 +63,48 @@ export default function CreatePost() {
 
       if (insertError) throw insertError
 
-      alert('Post uploaded successfully!')
+      toast.success('Post uploaded successfully!')
       router.push('/')
 
     } catch (error) {
-      alert(error.message)
+      toast.error(error.message)
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 flex flex-col items-center">
+    <main className="min-h-screen bg-black text-white">
 
       {/* Header */}
-      <header className="w-full bg-white border-b px-6 py-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Instagram</h1>
-        <button
-          onClick={() => router.push('/')}
-          className="text-gray-600 hover:text-black"
-        >
-          Cancel
-        </button>
+      <header className="w-full bg-black border-b border-[#262626] px-6 py-4">
+        <div className="max-w-5xl mx-auto flex justify-between items-center">
+          <h1
+            className="text-2xl font-bold cursor-pointer"
+            onClick={() => router.push('/')}
+          >
+            Instagram
+          </h1>
+
+          <button
+            onClick={() => router.push('/')}
+            className="text-gray-400 hover:text-white transition"
+          >
+            Cancel
+          </button>
+        </div>
       </header>
 
       {/* Create Post */}
-      <div className="w-full max-w-4xl mt-10 px-4">
+      <div className="w-full max-w-4xl mx-auto mt-12 px-4 pb-10">
 
-        <div className="bg-white border rounded-xl overflow-hidden">
+        <div className="bg-[#121212] border border-[#262626] rounded-xl overflow-hidden">
 
           {/* Title */}
-          <div className="border-b p-4 text-center">
-            <h2 className="font-semibold text-lg">Create new post</h2>
+          <div className="border-b border-[#262626] p-4 text-center">
+            <h2 className="font-semibold text-lg">
+              Create new post
+            </h2>
           </div>
 
           <form onSubmit={handleUpload}>
@@ -101,26 +112,42 @@ export default function CreatePost() {
             <div className="grid grid-cols-1 md:grid-cols-2">
 
               {/* Image Preview */}
-              <div className="bg-gray-100 min-h-[350px] flex items-center justify-center">
+              <div className="bg-[#080808] min-h-[400px] flex items-center justify-center border-b md:border-b-0 md:border-r border-[#262626]">
 
                 {preview ? (
-                  <img
-                    src={preview}
-                    alt="Post preview"
-                    className="w-full h-full max-h-[550px] object-contain"
-                  />
+                  <div className="w-full h-full min-h-[400px] flex items-center justify-center relative">
+                    <img
+                      src={preview}
+                      alt="Post preview"
+                      className="w-full max-h-[550px] object-contain"
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setImage(null)
+                        setPreview(null)
+                      }}
+                      className="absolute top-4 right-4 bg-black/70 hover:bg-black text-white rounded-full w-9 h-9"
+                    >
+                      ✕
+                    </button>
+                  </div>
                 ) : (
                   <div className="text-center p-8">
-                    <div className="text-6xl mb-4">📷</div>
+                    <div className="text-6xl mb-5">📷</div>
+
                     <p className="text-lg font-medium">
                       Drag photos here
                     </p>
+
                     <p className="text-sm text-gray-500 mt-2">
                       Share your photos with friends
                     </p>
 
-                    <label className="inline-block mt-5 bg-blue-500 text-white px-5 py-2 rounded-lg cursor-pointer hover:bg-blue-600">
+                    <label className="inline-block mt-6 bg-[#0095f6] text-white px-5 py-2 rounded-lg cursor-pointer hover:bg-[#1877f2] transition font-semibold text-sm">
                       Select from computer
+
                       <input
                         type="file"
                         accept="image/*"
@@ -137,10 +164,15 @@ export default function CreatePost() {
               <div className="flex flex-col p-5">
 
                 <div className="flex items-center gap-3 mb-5">
-                  <div className="w-9 h-9 rounded-full bg-gray-300 flex items-center justify-center">
-                    👤
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 p-[2px]">
+                    <div className="w-full h-full rounded-full bg-[#121212] flex items-center justify-center">
+                      👤
+                    </div>
                   </div>
-                  <span className="font-semibold">Create a post</span>
+
+                  <span className="font-semibold text-sm">
+                    Create a post
+                  </span>
                 </div>
 
                 <textarea
@@ -148,10 +180,10 @@ export default function CreatePost() {
                   value={caption}
                   onChange={(e) => setCaption(e.target.value)}
                   maxLength={2200}
-                  className="w-full resize-none outline-none min-h-[200px] text-sm"
+                  className="w-full resize-none outline-none min-h-[200px] bg-transparent text-white text-sm placeholder:text-gray-500"
                 />
 
-                <div className="text-gray-400 text-xs text-right mt-2">
+                <div className="text-gray-500 text-xs text-right mt-2">
                   {caption.length}/2,200
                 </div>
 
@@ -164,8 +196,9 @@ export default function CreatePost() {
                 <div className="mt-auto pt-6">
 
                   {!preview && (
-                    <label className="block text-center border rounded-lg p-2 mb-3 cursor-pointer hover:bg-gray-50">
+                    <label className="block text-center border border-[#363636] text-gray-300 rounded-lg p-3 mb-3 cursor-pointer hover:bg-[#262626] transition text-sm">
                       Select image
+
                       <input
                         type="file"
                         accept="image/*"
@@ -178,7 +211,7 @@ export default function CreatePost() {
                   <button
                     type="submit"
                     disabled={loading || !image}
-                    className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2.5 rounded-lg disabled:opacity-50"
+                    className="w-full bg-[#0095f6] hover:bg-[#1877f2] text-white font-semibold py-3 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition"
                   >
                     {loading ? 'Sharing...' : 'Share'}
                   </button>
@@ -191,7 +224,7 @@ export default function CreatePost() {
           </form>
         </div>
 
-        <p className="text-center text-gray-400 text-xs mt-5">
+        <p className="text-center text-gray-600 text-xs mt-6">
           Share your moments with everyone.
         </p>
 

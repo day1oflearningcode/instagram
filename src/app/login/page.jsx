@@ -1,3 +1,4 @@
+
 'use client'
 
 import { useState } from 'react'
@@ -38,17 +39,20 @@ const Login = () => {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[#fafafa] p-6">
+    <main className="flex min-h-screen items-center justify-center bg-black p-6 text-white">
       <div className="w-full max-w-[350px]">
-        <div className="border border-zinc-200 bg-white px-10 py-10">
+
+        <div className="border border-[#262626] bg-[#121212] px-10 py-10 rounded-xl">
+
+          {/* Logo */}
           <div className="mb-8 flex flex-col items-center">
-            <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
+            <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="white"
                 strokeWidth="1.8"
-                className="h-9 w-9"
+                className="h-10 w-10"
               >
                 <rect x="3" y="3" width="18" height="18" rx="5" />
                 <circle cx="12" cy="12" r="4" />
@@ -56,13 +60,16 @@ const Login = () => {
               </svg>
             </div>
 
-            <h1 className="text-3xl font-bold tracking-tight text-zinc-900">
+            <h1 className="text-3xl font-bold tracking-tight">
               social
             </h1>
 
-            <p className="mt-2 text-sm text-zinc-500">Share your moments.</p>
+            <p className="mt-2 text-sm text-gray-500">
+              Share your moments.
+            </p>
           </div>
 
+          {/* Login Form */}
           <form onSubmit={handleLogin} className="space-y-3">
             <input
               type="email"
@@ -70,7 +77,7 @@ const Login = () => {
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               required
-              className="w-full rounded-sm border border-zinc-300 bg-[#fafafa] px-3 py-3 text-xs outline-none transition focus:border-zinc-500"
+              className="w-full rounded-lg border border-[#363636] bg-[#1e1e1e] px-3 py-3 text-sm text-white placeholder:text-gray-500 outline-none transition focus:border-gray-500"
             />
 
             <input
@@ -79,24 +86,29 @@ const Login = () => {
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               required
-              className="w-full rounded-sm border border-zinc-300 bg-[#fafafa] px-3 py-3 text-xs outline-none transition focus:border-zinc-500"
+              className="w-full rounded-lg border border-[#363636] bg-[#1e1e1e] px-3 py-3 text-sm text-white placeholder:text-gray-500 outline-none transition focus:border-gray-500"
             />
 
-            {error && <p className="text-center text-xs text-red-500">{error}</p>}
+            {error && (
+              <p className="text-center text-xs text-red-500">
+                {error}
+              </p>
+            )}
 
             <Button
               type="submit"
               disabled={loading}
-              className="h-9 w-full rounded-lg bg-[#0095f6] text-sm font-semibold text-white hover:bg-[#1877f2]"
+              className="h-10 w-full rounded-lg bg-[#0095f6] text-sm font-semibold text-white hover:bg-[#1877f2] disabled:opacity-50"
             >
               {loading ? 'Logging in...' : 'Log in'}
             </Button>
           </form>
         </div>
 
-        <div className="mt-3 border border-zinc-200 bg-white p-5 text-center">
-          <p className="text-sm text-zinc-700">
-            Don&apos;t have an account?{' '}
+        {/* Signup Link */}
+        <div className="mt-3 border border-[#262626] bg-[#121212] p-5 text-center rounded-xl">
+          <p className="text-sm text-gray-400">
+            Don't have an account?{' '}
             <button
               type="button"
               onClick={() => router.push('/signup')}
@@ -107,7 +119,9 @@ const Login = () => {
           </p>
         </div>
 
-        <p className="mt-8 text-center text-xs text-zinc-400">© 2026 SOCIAL</p>
+        <p className="mt-8 text-center text-xs text-gray-600">
+          © 2026 SOCIAL
+        </p>
       </div>
     </main>
   )
